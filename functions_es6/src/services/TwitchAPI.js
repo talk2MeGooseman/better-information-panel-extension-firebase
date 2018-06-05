@@ -5,7 +5,7 @@ import {
   EXTENSION_VERSION,
   CONFIG_KEY,
 } from "./Constants";
-import { signToken } from "./AuthToken";
+import { signToken, signChannelMessageToken } from "./AuthToken";
 
 export async function setExtensionConfigured(channel_id, secret, version=EXTENSION_VERSION) {
   const token = signToken(secret);
@@ -22,4 +22,24 @@ export async function setExtensionConfigured(channel_id, secret, version=EXTENSI
       'Authorization': `Bearer ${token}`
     }
   });
+}
+
+export async function publishChannelMessage(channel_id, secret) {
+   const token = signChannelMessageToken(channel_id, secret);
+
+  let response = await axios({
+    method: 'POST',
+    url: `${TWITCH_BASE_EXTENSION_URL}/message/${channel_id}`,
+    data: {
+      "message": {
+        "refresh": true
+      },
+      "targets":["broadcast"]
+    },
+    headers: {
+      'Content-Type': 'application/json',
+      'Client-id': EXTENSION_ID,
+      'Authorization': `Bearer ${token}`
+    }
+  }); 
 }

@@ -6,6 +6,7 @@ import {
   verifyToken,
   decodeToken
 } from "./src/services/TokenUtil";
+import { publishChannelMessage } from "./src/services/TwitchAPI";
 require('dotenv').config()
 
 const app = express();
@@ -43,8 +44,12 @@ app.post('/', (req, res) => {
   const setAda = docRef.set({
     tabs: data.tabs,
   }).then(() => {
+    return publishChannelMessage(decoded_token.channel_id, secret);
+  }).then(() => {
+    console.info('Channel ', decoded_token.channel_id, 'updated succeeded');
     return res.status(201).end();
   }).catch(() => {
+    console.error('Channel ', decoded_token.channel_id, 'update failed to DB');
     return res.status(400).end();
   });
 });
@@ -65,7 +70,7 @@ app.get('/', (req, res) => {
 
   // Read the document.
   docRef.get().then(doc => {
-    console.log(doc.data());
+    console.info('Channel ', decoded_token.channel_id, 'info requested');
     return res.json(doc.data());
   }).catch((error) => {
     console.error(error);
