@@ -44,12 +44,11 @@ app.post('/', (req, res) => {
   const setAda = docRef.set({
     tabs: data.tabs,
   }).then(() => {
-    return publishChannelMessage(decoded_token.channel_id, secret);
-  }).then(() => {
     console.info('Channel ', decoded_token.channel_id, 'updated succeeded');
+    publishChannelMessage(decoded_token.channel_id, SECRET);
     return res.status(201).end();
-  }).catch(() => {
-    console.error('Channel ', decoded_token.channel_id, 'update failed to DB');
+  }).catch((error) => {
+    console.error('Channel ', decoded_token.channel_id, 'update failed to DB', error);
     return res.status(400).end();
   });
 });
