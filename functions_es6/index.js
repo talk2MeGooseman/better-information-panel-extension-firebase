@@ -22,7 +22,13 @@ if (functions.config().twitch) {
 exports.set_panel_information = functions.https.onRequest((req, res) => {
   cors(req, res, () => {
     let decoded_token;
-    const { tabs, videoComponentTransparent, videoComponentVisibility } = req.body;
+    const {
+      tabs,
+      videoComponentTransparent,
+      videoComponentVisibility,
+      videoToggleImageUrl,
+      videoToggleButtonPosition,
+    } = req.body;
 
     const token = req.get("x-extension-jwt");
 
@@ -41,6 +47,8 @@ exports.set_panel_information = functions.https.onRequest((req, res) => {
         tabs,
         videoComponentVisibility,
         videoComponentTransparent,
+        videoToggleImageUrl,
+        videoToggleButtonPosition,
       })
       .then(() => {
         console.info("Channel ", decoded_token.channel_id, "updated succeeded");
