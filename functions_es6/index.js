@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const express = require("express");
 import { verifyToken, decodeToken } from "./src/services/TokenUtil";
 import { publishChannelMessage } from "./src/services/TwitchAPI";
+import stripHtml from 'strip';
 require("dotenv").config();
 
 admin.initializeApp(functions.config().firebase);
@@ -42,9 +43,14 @@ exports.set_panel_information = functions.https.onRequest((req, res) => {
 
     const docRef = db.collection("channels").doc(decoded_token.user_id);
 
+    let sanitizedTabs = tabs.map((tab) => {
+        tab.body = stripHtml(tab.body);
+        return tab;
+    });
+
     const setAda = docRef
       .set({
-        tabs,
+        tabs: sanitizedTabs,
         videoComponentVisibility,
         videoComponentTransparent,
         videoToggleImageUrl,
