@@ -4,6 +4,7 @@ const express = require("express");
 import { verifyToken, decodeToken } from "./src/services/TokenUtil";
 import { publishChannelMessage } from "./src/services/TwitchAPI";
 import stripHtml from 'strip';
+import { CSS_REGEX } from "./src/Constants";
 require("dotenv").config();
 
 admin.initializeApp(functions.config().firebase);
@@ -45,6 +46,8 @@ exports.set_panel_information = functions.https.onRequest((req, res) => {
 
     let sanitizedTabs = tabs.map((tab) => {
         tab.body = stripHtml(tab.body);
+        tab.bgColor = getValidCssColor(tab.bgColor);
+        tab.textColor = getValidCssColor(tab.textColor);
         return tab;
     });
 
@@ -101,3 +104,11 @@ exports.get_panel_information = functions.https.onRequest((req, res) => {
       });
   });
 });
+
+function getValidCssColor(color="") {
+   if (color.match(CSS_REGEX)) {
+     return color;
+   } else {
+     return "#000000";
+   }
+}
