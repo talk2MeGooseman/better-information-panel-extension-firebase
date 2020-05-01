@@ -10,7 +10,9 @@
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "preserve": "npm run package-functions",
-    "serve": "firebase serve --only functions"
+    "serve": "firebase serve --only functions",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "",
   "dependencies": {
@@ -20,7 +22,9 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "firebase-functions": "^2.0.5",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "snyk": "^1.316.1"
   },
-  "private": true
+  "private": true,
+  "snyk": true
 }
