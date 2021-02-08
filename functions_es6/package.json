@@ -1,6 +1,7 @@
 {
   "name": "functions",
   "description": "Cloud Functions for Firebase",
+  "engines": {"node": "10"},
   "scripts": {
     "lint": "eslint .",
     "logs": "firebase functions:log"
@@ -11,8 +12,8 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
-    "firebase-admin": "~5.12.1",
-    "firebase-functions": "^1.0.3",
+    "firebase-admin": "8.9.0",
+    "firebase-functions": "^3.0.0",
     "jsonwebtoken": "^8.1.0",
     "strip": "^3.0.0"
   },
