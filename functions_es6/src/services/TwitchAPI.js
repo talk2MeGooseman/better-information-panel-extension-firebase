@@ -16,9 +16,11 @@ export async function setExtensionConfigured(
 
   let response = await axios({
     method: "PUT",
-    url: `${TWITCH_BASE_EXTENSION_URL}/${EXTENSION_ID}/${EXTENSION_VERSION}/required_configuration?channel_id=${channel_id}`,
+    url: `${TWITCH_BASE_EXTENSION_URL}/required_configuration?broadcaster_id=${channel_id}`,
     data: {
       required_configuration: CONFIG_KEY,
+      extension_id: EXTENSION_ID,
+      extension_version: version
     },
     headers: {
       "Content-Type": "application/json",
@@ -38,11 +40,11 @@ export async function publishChannelMessage(channel_id, secret) {
   try {
     let response = await axios({
       method: "POST",
-      url: `${TWITCH_BASE_EXTENSION_URL}/message/${channel_id}`,
+      url: `${TWITCH_BASE_EXTENSION_URL}/pubsub`,
       data: {
-        content_type: "application/json",
+        broadcaster_id: channel_id,
         message: message,
-        targets: ["broadcast"],
+        target: "broadcast",
       },
       headers: {
         "Content-Type": "application/json",
